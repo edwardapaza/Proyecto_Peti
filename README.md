@@ -6,3 +6,11 @@ en Tacna, Perú, con el propósito de gestionar eficientemente el registro de us
 y otras actividades administrativas. Este sistema permitirá realizar operaciones
 CRUD de manera intuitiva, mejorando la transparencia y eficiencia en la gestión
 de la información municipal y facilitando la prestación de servicios a la comunidad.
+
+
+| Integrante        | Rol             |
+|-------------------|-----------------|
+| Edward Apaza        | Desarrollador   |
+| Marjiori Llantay       | Diseñadora UI   |
+| Fiorella Ticahuanca      | Tester          |
+| Joel Ccalli    | Analista        |

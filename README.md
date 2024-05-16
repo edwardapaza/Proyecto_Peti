@@ -1,4 +1,4 @@
-# Proyecto_Peti
+# Proyecto PETI: Municipalidad Distrital Crnl. Gregorio Albarracín­ Lanchipa (MD-CGAL)
 
 El informe presenta el diseño y desarrollo de un sistema en Python y
 base de datos para la Municipalidad Distrital Crnl. Gregorio Albarracín Lanchipa

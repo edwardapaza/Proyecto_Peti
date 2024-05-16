@@ -11,6 +11,6 @@ de la información municipal y facilitando la prestación de servicios a la comu
 | Integrante        | Rol             |
 |-------------------|-----------------|
 | Edward Apaza        | Desarrollador   |
-| Marjiori Llantay       | Diseñadora UI   |
+| Marjiori Llantay       | Diseñadora    |
 | Fiorella Ticahuanca      | Tester          |
 | Joel Ccalli    | Analista        |

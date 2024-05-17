@@ -14,3 +14,4 @@ de la información municipal y facilitando la prestación de servicios a la comu
 | Marjiori Llantay       | Diseñadora    |
 | Fiorella Ticahuanca      | Tester          |
 | Joel Ccalli    | Analista        |
+| Gerardo Concha    | Analista        |

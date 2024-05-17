@@ -12,6 +12,6 @@ de la información municipal y facilitando la prestación de servicios a la comu
 |-------------------|-----------------|
 | Edward Apaza        | Desarrollador   |
 | Marjiori Llantay       | Diseñadora    |
-| Fiorella Ticahuanca      | Tester          |
+| Fiorela Ticahuanca      | Tester          |
 | Joel Ccalli    | Analista        |
 | Gerardo Concha    | Desarrollador        |

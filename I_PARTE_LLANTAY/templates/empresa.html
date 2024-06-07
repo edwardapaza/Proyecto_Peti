@@ -1,0 +1,59 @@
+
+{% extends "base.html" %}
+{% block content %}
+   
+<div id="layoutSidenav">
+
+    {% include 'menu.html' %}
+
+    <div id="layoutSidenav_content">
+
+        <main>
+            <div class="container-fluid px-4">
+                <h2 class="mt-4"></h2>
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="card mb-6">
+                            <div class="card-header">
+                                <i class="fas fa-chart-area me-1"></i>
+                                Listado de empresas
+                            </div>
+                            <div class="card-body">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Empresa ID</th>
+                                            <th>Nombre</th>
+                                            <th>Tipo</th>
+                                            <th>Sector</th>
+                                            <th>Accion</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for empresa in empresas %}
+                                        <tr>
+                                            <td>{{ empresa.empresa_id }}</td>
+                                            <td>{{ empresa.nombre }}</td>
+                                            <td>{{ empresa.tipo }}</td>
+                                            <td>{{ empresa.descripcion }}</td>
+                                            <td>
+                                                <button type="button" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Administrar Plan Estratégico">
+                                                    <i class="fas fa-cogs"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        {% include 'footer.html' %}
+
+    </div>
+</div>
+{% endblock %}

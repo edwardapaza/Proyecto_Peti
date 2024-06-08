@@ -1,0 +1,226 @@
+<div class="card mb-4">
+    <div class="card-header">
+        <i class="fas fa-chart-area me-1"></i>
+        Valores
+    </div>
+    <div class="card-body" id="valores-container">
+        {% if valores %}
+            {% for valor in valores %}
+            <div class="mb-3 valor-item row" data-valor-id="{{ valor.valor_id }}">
+                <div class="col-md-8">
+                    <textarea class="form-control valor-input" name="valores" rows="3">{{ valor.valor }}</textarea>
+                </div>
+                <div class="col-md-4">
+                    <button type="button" class="btn btn-danger eliminar-valor" data-bs-toggle="tooltip" data-bs-placement="top" title="Eliminar"><i class="fas fa-trash-alt"></i></button>
+                    <button type="button" class="btn btn-primary actualizar-valor" data-bs-toggle="tooltip" data-bs-placement="top" title="Actualizar"><i class="fas fa-edit"></i></button>
+                </div>
+            </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+    <div class="card-footer">
+        <button type="button" class="btn btn-primary agregar-valor">Agregar Nuevo Valor</button>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script>
+
+    function agregarCampoValor() {
+        var nuevoCampo = document.createElement('div');
+        nuevoCampo.className = 'mb-3 valor-item row';
+        nuevoCampo.innerHTML = `
+            <div class="col-md-8">
+                <textarea class="form-control valor-input" name="valores" rows="3"></textarea>
+            </div>
+            <div class="col-md-4">
+                <button type="button" class="btn btn-danger eliminar-valor" data-bs-toggle="tooltip" data-bs-placement="top" title="Eliminar"><i class="fas fa-trash-alt"></i></button>
+                <button type="button" class="btn btn-primary guardar-valor" data-bs-toggle="tooltip" data-bs-placement="top" title="Guardar valor"><i class="fas fa-save"></i></button>
+            </div>
+        `;
+        document.getElementById('valores-container').appendChild(nuevoCampo);
+
+        var tooltips = nuevoCampo.querySelectorAll('[data-bs-toggle="tooltip"]');
+        tooltips.forEach(function(tooltip) {
+            new bootstrap.Tooltip(tooltip);
+        });
+    }
+
+    // Evento click para agregar un nuevo campo de entrada de valor
+    document.querySelector('.agregar-valor').addEventListener('click', function() {
+        agregarCampoValor();
+    });
+
+    // Evento click para eliminar 
+    document.getElementById('valores-container').addEventListener('click', function(event) {
+        if (event.target && event.target.classList.contains('eliminar-valor')) {
+            
+            
+            var valorItems = event.target.closest('.valor-item');
+            var valorId = valorItems.dataset.valorId;
+
+            console.log("valor item ", valorItems)
+            console.log("valor id ", valorId)
+
+            if(valorId != undefined) {
+                
+                swal({
+                    title: "¿Estás seguro?",
+                    text: "¡Una vez eliminado, no podrás recuperar este valor!",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        $.ajax({
+                            url: '/valor/eliminar',
+                            type: 'POST',
+                            data: {
+                                valor_id: valorId
+                            },
+                            success: function(data) {
+                                if (data.status === 'success') {
+                                    swal({
+                                        icon: 'success',
+                                        title: 'Valor eliminado exitosamente!',
+                                        showConfirmButton: false,
+                                        timer: 1500
+                                    }).then(function() {
+                                        valorItems.remove();
+                                    });
+                                } else {
+                                    swal({
+                                        icon: 'error',
+                                        title: 'Error al eliminar el valor',
+                                        showConfirmButton: false,
+                                        timer: 1500
+                                    });
+                                }
+                            },
+                            error: function(error) {
+                                console.error('Error:', error);
+                            }
+                        });
+                    }
+                });
+            }else{
+                valorItem.remove();
+            }
+
+ 
+        }
+    });
+
+    // Evento click para actualizar 
+    document.getElementById('valores-container').addEventListener('click', function(event) {
+        if (event.target && event.target.classList.contains('actualizar-valor')) {
+
+
+            let empresa_id_seleccionado = 0;
+            var nombreEmpresa = localStorage.getItem('empresa_seleccionada');
+            if (nombreEmpresa) {
+                nombreEmpresa = JSON.parse(nombreEmpresa);
+                empresa_id_seleccionado = nombreEmpresa.id;
+            }
+
+
+            var valorItem = event.target.closest('.valor-item');
+            var valorId = valorItem.dataset.valorId;
+            var valor = valorItem.querySelector('.valor-input').value;
+
+            console.log("valor ", valor)
+
+      
+                $.ajax({
+                url: '/valor/actualizar',
+                type: 'POST',
+                data: {
+                    valor_id: valorId,
+                    valor: valor
+                },
+                success: function(data) {
+           
+                    swal({
+                        icon: 'success',
+                        title: 'Valor actualizado exitosamente!',
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then(function() {
+                        location.reload();
+                    });
+              
+                },
+                error: function(error) {
+                    console.error('Error:', error);
+                }
+            });
+   
+
+  
+        }
+    });
+
+    // Evento click para guardar 
+    document.getElementById('valores-container').addEventListener('click', function(event) {
+        if (event.target && event.target.classList.contains('guardar-valor')) {
+            console.log('Guardar valor button clicked'); 
+
+
+
+            let empresa_id_seleccionado = 0;
+            var nombreEmpresa = localStorage.getItem('empresa_seleccionada');
+            if (nombreEmpresa) {
+                nombreEmpresa = JSON.parse(nombreEmpresa);
+                empresa_id_seleccionado = nombreEmpresa.id;
+            }
+            
+
+            var valorItem = event.target.closest('.valor-item');
+            var valor = valorItem.querySelector('.valor-input').value;
+            var empresaId = empresa_id_seleccionado;
+
+                $.ajax({
+                url: '/valor/agregar',
+                type: 'POST',
+                data: {
+                    empresa_id: empresaId,
+                    valor: valor
+                },
+                success: function(data) {
+                
+                    swal({
+                        icon: 'success',
+                        title: 'Valor guardado exitosamente!',
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then(function() {
+                        location.reload();
+                    });
+
+                    event.target.classList.remove('guardar-valor');
+                    event.target.classList.add('actualizar-valor');
+                    event.target.innerHTML = '<i class="fas fa-edit"></i>';
+                    event.target.setAttribute('title', 'Actualizar');
+                    $(event.target).tooltip('dispose').tooltip(); 
+                   
+                },
+                error: function(error) {
+                    console.error('Error:', error);
+                }
+            });
+            
+
+
+        }
+    });
+
+    // Inicializar tooltips de Bootstrap
+    document.addEventListener('DOMContentLoaded', function() {
+        var tooltips = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+        tooltips.forEach(function(tooltip) {
+            new bootstrap.Tooltip(tooltip);
+        });
+    });
+</script>

@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block content %}
+   
+<div id="layoutSidenav">
+
+    {% include 'menu.html' %}
+
+    <div id="layoutSidenav_content">
+
+        <main>
+            <div class="container-fluid px-4">
+                <h2 class="mt-4">Empresas</h2>
+                <br>
+                <div class="row">
+                    {% for empresa in empresas %}
+                    <div class="col-xl-3 mb-4">
+                        <div class="card">
+                            <div class="card-header">
+                                {{ empresa.nombre }}
+                            </div>
+                            <div class="card-body">
+                                <p>{{ empresa.sector }}</p>
+
+                                <a href="/mision/{{ empresa.empresa_id }}"  class="btn btn-primary ver-plan" data-empresa-id="{{ empresa.empresa_id }}" data-empresa-nombre="{{ empresa.nombre }}">Ver plan</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </main>
+
+        {% include 'footer.html' %}
+
+    </div>
+</div>
+
+<script>
+    document.querySelectorAll('.ver-plan').forEach(function(link) {
+        link.addEventListener('click', function(event) {
+            event.preventDefault();
+            var empresaId = link.getAttribute('data-empresa-id');
+            var empresaNombre = link.getAttribute('data-empresa-nombre');
+            var empresa = { id: empresaId, nombre: empresaNombre };
+            localStorage.setItem('empresa_seleccionada', JSON.stringify(empresa));
+            window.location.href = link.getAttribute('href');
+        });
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,563 @@
+
+<style>
+    .objetivo-item {
+        border: 1px solid #dee2e6;
+        border-radius: 5px;
+        margin-bottom: 10px;
+        padding: 15px;
+        background-color: #f9f9f9;
+    }
+
+    .objetivo-item textarea {
+        resize: none;
+        border: none;
+        width: 100%;
+        height: 100%;
+        background-color: transparent;
+    }
+
+    .acciones {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 10px;
+    }
+
+    .acciones button {
+        margin-left: 5px;
+    }
+
+    .subtitulo{
+        padding-left: 30px;
+    }
+
+    .objetivo-especifico-item{
+        margin-top: 10px;
+        padding-left: 30px;
+        list-style: none;
+    }
+</style>
+<div class="card mb-4">
+    <div class="card-header">
+        <i class="fas fa-bullseye me-1"></i>
+        Objetivos Generales
+    </div>
+    <!--
+    <div class="card-body" id="objetivos-generales-container">
+        {% if objetivos_generales %}
+            {% for objetivo_general in objetivos_generales %}
+            <div class="mb-3 objetivo-general-item row" data-objetivo-general-id="{{ objetivo_general.objetivo_general_id }}">
+                <div class="col-md-8">
+                    <textarea class="form-control objetivo-general-input" name="objetivos_generales" rows="2">{{ objetivo_general.descripcion }}</textarea>
+                </div>
+                <div class="col-md-4">
+                    <button type="button" class="btn btn-danger eliminar-objetivo-general" data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="fas fa-trash-alt"></i></button>
+                    <button type="button" class="btn btn-primary actualizar-objetivo-general" data-toggle="tooltip" data-placement="top" title="Actualizar"><i class="fas fa-edit"></i></button>
+                    <button type="button" class="btn btn-secondary agregar-objetivo-especifico" data-toggle="tooltip" data-placement="top" title="Agregar Objetivo Específico"><i class="fas fa-plus"></i></button>
+                </div>
+            </div>
+
+      
+            <div class="ml-5 mb-4 objetivos-especificos-container" data-objetivo-general-id="{{ objetivo_general.objetivo_general_id }}">
+                
+                {% if objetivos_especificos %}
+                    <h5 class="subtitulo">Objetivos Específicos:</h5>
+                    {% for objetivo_especifico in objetivos_especificos %}
+                    <div class="mb-3 objetivo-especifico-item row" data-objetivo-especifico-id="{{ objetivo_especifico.objetivo_especifico_id }}">
+                        <div class="col-md-8">
+                            <textarea class="form-control objetivo-especifico-input" name="objetivos_especificos" rows="2">{{ objetivo_especifico.descripcion }}</textarea>
+                        </div>
+                        <div class="col-md-4">
+                            <button type="button" class="btn btn-danger eliminar-objetivo-especifico" data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="fas fa-trash-alt"></i></button>
+                            <button type="button" class="btn btn-primary actualizar-objetivo-especifico" data-toggle="tooltip" data-placement="top" title="Actualizar"><i class="fas fa-edit"></i></button>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            
+            {% endfor %}
+        {% endif %}
+    </div>
+    -->
+    
+
+    <div class="card-body" id="objetivos-generales-container">
+        {% if objetivos_generales %}
+            {% for objetivo_general in objetivos_generales %}
+            <div class="mb-3 objetivo-general-item row" id="objectivo_id" data-objetivo-general-id="{{ objetivo_general.objetivo_general_id }}">
+                <div class="col-md-8">
+                    <textarea class="form-control objetivo-general-input" name="objetivos_generales" rows="2">{{ objetivo_general.descripcion }}</textarea>
+                </div>
+                <div class="col-md-4">
+                    <button type="button" class="btn btn-danger eliminar-objetivo-general" data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="fas fa-trash-alt"></i></button>
+                    <button type="button" class="btn btn-primary actualizar-objetivo-general" data-toggle="tooltip" data-placement="top" title="Actualizar"><i class="fas fa-edit"></i></button>
+                    <button type="button" class="btn btn-secondary agregar-objetivo-especifico" data-toggle="tooltip" data-placement="top" title="Agregar Objetivo Específico"><i class="fas fa-plus"></i></button>
+                </div>
+            </div>
+    
+            <!-- Objetivos Específicos -->
+            <div class="ml-5 mb-4 objetivos-especificos-container" data-objetivo-general-id="{{ objetivo_general.objetivo_general_id }}">
+                {% if objetivo_general.objetivos_especificos %}
+                    <h5 class="subtitulo">Objetivos Específicos:</h5>
+                    {% for objetivo_especifico in objetivo_general.objetivos_especificos %}
+                    <div class="mb-3 objetivo-especifico-item row" data-objetivo-especifico-id="{{ objetivo_especifico.objetivo_especifico_id }}">
+                        <div class="col-md-8">
+                            <textarea class="form-control objetivo-especifico-input" name="objetivos_especificos" rows="2">{{ objetivo_especifico.descripcion }}</textarea>
+                        </div>
+                        <div class="col-md-4">
+                            <button type="button" class="btn btn-danger eliminar-objetivo-especifico" data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="fas fa-trash-alt"></i></button>
+                            <button type="button" class="btn btn-primary actualizar-objetivo-especifico" data-toggle="tooltip" data-placement="top" title="Actualizar"><i class="fas fa-edit"></i></button>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="text-muted">No se encontraron objetivos específicos para este objetivo general. Por favor, comience a llenar los objetivos específicos para alcanzar las metas detalladas del objetivo general.</p>
+                {% endif %}
+            </div>
+            
+            {% endfor %}
+        {% else %}
+            <p class="text-muted">No se encontraron objetivos generales. Por favor, comience a agregar nuevos objetivos generales para su empresa.</p>
+        {% endif %}
+    </div>
+    
+    
+    <div class="card-footer">
+        <button type="button" class="btn btn-primary agregar-objetivo-general">Agregar Nuevo Objetivo General</button>
+    </div>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    // Función para agregar un nuevo campo de entrada de objetivo general
+    function agregarCampoObjetivoGeneral() {
+        var nuevoCampo = document.createElement('div');
+        nuevoCampo.className = 'mb-3 objetivo-general-item row';
+        nuevoCampo.innerHTML = `
+            <div class="col-md-8">
+                <textarea class="form-control objetivo-general-input" name="objetivos_generales" rows="2"></textarea>
+            </div>
+            <div class="col-md-4">
+                <button type="button" class="btn btn-danger eliminar-objetivo-general" data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="fas fa-trash-alt"></i></button>
+                <button type="button" class="btn btn-primary guardar-objetivo-general" data-toggle="tooltip" data-placement="top" title="Guardar"><i class="fas fa-save"></i></button>
+                <button type="button" class="btn btn-secondary agregar-objetivo-especifico" data-toggle="tooltip" data-placement="top" title="Agregar Objetivo Específico"><i class="fas fa-plus"></i></button>
+            </div>
+        `;
+        document.getElementById('objetivos-generales-container').appendChild(nuevoCampo);
+        $('[data-toggle="tooltip"]').tooltip(); // Inicializar tooltips
+    }
+
+    // Función para agregar un nuevo campo de entrada de objetivo específico
+    function agregarCampoObjetivoEspecifico(container) {
+        var nuevoCampo = document.createElement('div');
+        nuevoCampo.className = 'mb-3 objetivo-especifico-item row';
+        nuevoCampo.innerHTML = `
+            <div class="col-md-8">
+                <textarea class="form-control objetivo-especifico-input" name="objetivos_especificos" rows="2"></textarea>
+            </div>
+            <div class="col-md-4">
+                <button type="button" class="btn btn-danger eliminar-objetivo-especifico" data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="fas fa-trash-alt"></i></button>
+                <button type="button" class="btn btn-primary guardar-objetivo-especifico" data-toggle="tooltip" data-placement="top" title="Guardar"><i class="fas fa-save"></i></button>
+            </div>
+        `;
+        container.appendChild(nuevoCampo);
+        $('[data-toggle="tooltip"]').tooltip(); // Inicializar tooltips
+    }
+
+    // Evento click para agregar un nuevo campo de entrada de objetivo general
+    document.querySelector('.agregar-objetivo-general').addEventListener('click', function() {
+        agregarCampoObjetivoGeneral();
+    });
+
+    // Evento click para agregar un nuevo campo de entrada de objetivo específico
+    document.getElementById('objetivos-generales-container').addEventListener('click', function(event) {
+        if (event.target && event.target.classList.contains('agregar-objetivo-especifico')) {
+            var objetivoGeneralItem = event.target.closest('.objetivo-general-item');
+            var objetivosEspecificosContainer = objetivoGeneralItem.nextElementSibling;
+            if (objetivosEspecificosContainer && objetivosEspecificosContainer.classList.contains('objetivos-especificos-container')) {
+                agregarCampoObjetivoEspecifico(objetivosEspecificosContainer);
+            } else {
+                var nuevoContainer = document.createElement('div');
+                nuevoContainer.className = 'ml-5 mb-4 objetivos-especificos-container';
+                agregarCampoObjetivoEspecifico(nuevoContainer);
+                objetivoGeneralItem.parentNode.insertBefore(nuevoContainer, objetivoGeneralItem.nextSibling);
+            }
+        }
+    });
+
+
+    // Evento click para guardar un nuevo objetivo general
+    document.getElementById('objetivos-generales-container').addEventListener('click', function(event) {
+        if (event.target && event.target.classList.contains('guardar-objetivo-general')) {
+            
+            var descripcion = event.target.closest('.objetivo-general-item').querySelector('.objetivo-general-input').value;
+
+            if (descripcion.trim() === '') {
+                swal({
+                    title: 'Error',
+                    text: 'La descripción del objetivo general no puede estar vacía.',
+                    icon: 'error'
+                });
+                return; 
+            }
+
+            let empresa_id_seleccionado = 0;
+            var nombreEmpresa = localStorage.getItem('empresa_seleccionada');
+            if (nombreEmpresa) {
+                nombreEmpresa = JSON.parse(nombreEmpresa);
+                empresa_id_seleccionado = nombreEmpresa.id;
+            }
+
+            $.ajax({
+                url: '/objectivo/guardar_objetivo_general',
+                type: 'POST',
+                data: {
+                    empresa_id:empresa_id_seleccionado,
+                    descripcion: descripcion
+                },
+                success: function(response) {
+                    swal({
+                        title: 'Éxito',
+                        text: 'Objetivo general guardado exitosamente.',
+                        icon: 'success'
+                        }).then(function() {
+                            location.reload();
+                        });
+                    },
+                    error: function(error) {
+                        console.error('Error:', error);
+                        swal({
+                            title: 'Error',
+                            text: 'Ocurrió un error al guardar el objetivo general.',
+                            icon: 'error'
+                        });
+                    }
+            });
+        }
+    });
+
+
+    // Evento click para eliminar objetivo general
+    document.getElementById('objetivos-generales-container').addEventListener('click', function(event) {
+        if (event.target && event.target.classList.contains('eliminar-objetivo-general')) {
+  
+            var objetivoGeneralItem = event.target.closest('.objetivo-general-item');
+            var objetivoGeneralId = objetivoGeneralItem.dataset.objetivoGeneralId;
+        
+
+            if(objetivoGeneralId != undefined ){
+
+                swal({
+                title: '¿Estás seguro?',
+                text: 'Esta acción eliminará este objetivo general y todos sus objetivos específicos asociados.',
+                icon: 'warning',
+                buttons: ['Cancelar', 'Sí, eliminar'],
+                dangerMode: true,
+                }).then((confirmacion) => {
+                    if (confirmacion) {
+                        // Obtener el ID del objetivo general
+                        var objetivoGeneralId = objetivoGeneralItem.dataset.objetivoGeneralId;
+
+                        let empresa_id_seleccionado = 0;
+                        var nombreEmpresa = localStorage.getItem('empresa_seleccionada');
+                        if (nombreEmpresa) {
+                            nombreEmpresa = JSON.parse(nombreEmpresa);
+                            empresa_id_seleccionado = nombreEmpresa.id;
+                        }
+
+                        $.ajax({
+                            url: '/objectivo/eliminar_objetivo_general',
+                            type: 'POST',
+                            data: {
+                                empresa_id: empresa_id_seleccionado,
+                                objetivo_id: objetivoGeneralId
+                            },
+                            success: function(data) {
+                                swal({
+                                    icon: 'success',
+                                    title: 'Objetivo general eliminado exitosamente',
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                });
+                                
+                                objetivoGeneralItem.remove();
+                                location.reload();
+                            },
+                            error: function(error) {
+                                console.error('Error:', error);
+                            }
+                        });
+                    }
+                });
+            }else{
+                objetivoGeneralItem.remove();
+            }
+            
+
+
+        }
+    });
+
+
+    // Evento click para eliminar un campo de entrada de objetivo específico
+    document.getElementById('objetivos-generales-container').addEventListener('click', function(event) {
+        if (event.target && event.target.classList.contains('eliminar-objetivo-especifico')) {
+        
+            var objetivoEspecificoItem = event.target.closest('.objetivo-especifico-item');
+            
+            var objetivoEspecificoId = objetivoEspecificoItem.dataset.objetivoEspecificoId;
+
+            console.log("objetivoEspecificoId ", objetivoEspecificoId)
+
+            if(objetivoEspecificoId != undefined) {
+                
+                swal({
+                    title: "¿Estás seguro?",
+                    text: "¡Una vez eliminado, no podrás recuperar este objectivo especifico!",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        $.ajax({
+                            url: '/objectivo/eliminar_objetivo_especifico',
+                            type: 'POST',
+                            data: {
+                                objetivo_especifico_id: objetivoEspecificoId
+                            },
+                            success: function(data) {
+                                if (data.message) {  
+                                    swal({
+                                        icon: 'success',
+                                        title: 'Objecitvo especifico eliminado exitosamente!',
+                                        showConfirmButton: false,
+                                        timer: 1500
+                                    }).then(function() {
+                                        objetivoEspecificoItem.remove();
+                                        location.reload();
+                                    });
+                                } else {
+                                    swal({
+                                        icon: 'error',
+                                        title: 'Error al eliminar el Objecitvo especifico',
+                                        showConfirmButton: false,
+                                        timer: 1500
+                                    });
+                                }
+                            },
+                            error: function(error) {
+                                console.error('Error:', error);
+                                swal({
+                                    icon: 'error',
+                                    title: 'Error al eliminar el Objecitvo especifico',
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                });
+                            }
+                        });
+                    }
+                });
+            } else {
+                objetivoEspecificoItem.remove();
+            }
+        
+        }
+});
+
+
+
+    // Evento click para guardar un nuevo objetivo específico
+    document.getElementById('objetivos-generales-container').addEventListener('click', function(event) {
+        if (event.target && event.target.classList.contains('guardar-objetivo-especifico')) {
+            console.log('Guardar objetivo específico');
+
+            // Obtener todos los elementos con la clase objetivo-general-item
+            var contenedorObjetivoGeneral = event.target.closest('.objetivos-especificos-container');
+            if (contenedorObjetivoGeneral) {
+                var objetivoGeneralId = contenedorObjetivoGeneral.getAttribute('data-objetivo-general-id');
+            }
+
+            var objetivoEspecificoItem = event.target.closest('.objetivo-especifico-item');
+
+            var descripcion = objetivoEspecificoItem.querySelector('.objetivo-especifico-input').value;
+
+            if (!descripcion.trim()) {
+                swal({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'La descripción del objetivo específico no puede estar vacía',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+                return; 
+            }
+
+            $.ajax({
+                url: '/objectivo/agregar_objetivo_especifico',
+                type: 'POST',
+                data: {
+                    objetivo_general_id: objetivoGeneralId,
+                    descripcion: descripcion
+                },
+                success: function(data) {
+                    if (data.status === 'success') {
+                        swal({
+                            icon: 'success',
+                            title: 'Objetivo específico agregado exitosamente!',
+                            showConfirmButton: false,
+                            timer: 1500
+                        }).then(function() {
+                            var nuevoObjetivoEspecificoHTML = `
+                                <div class="mb-3 objetivo-especifico-item row" data-objetivo-especifico-id="${data.objetivo_especifico_id}">
+                                    <div class="col-md-8">
+                                        <textarea class="form-control objetivo-especifico-input" name="objetivos_especificos" rows="2">${descripcion}</textarea>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <button type="button" class="btn btn-danger eliminar-objetivo-especifico" data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="fas fa-trash-alt"></i></button>
+                                        <button type="button" class="btn btn-primary actualizar-objetivo-especifico" data-toggle="tooltip" data-placement="top" title="Actualizar"><i class="fas fa-edit"></i></button>
+                                    </div>
+                                </div>
+                            `;
+                            objetivoEspecificoItem.insertAdjacentHTML('afterend', nuevoObjetivoEspecificoHTML);
+                            objetivoEspecificoItem.remove();
+                            location.reload();
+                        });
+                    } else {
+                        swal({
+                            icon: 'error',
+                            title: 'Error al agregar el objetivo específico',
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    }
+                },
+                error: function(error) {
+                    console.error('Error:', error);
+                    swal({
+                        icon: 'error',
+                        title: 'Error al agregar el objetivo específico',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                }
+            });
+        }
+    });
+
+
+    // Evento click para actualizar un objetivo general
+    document.getElementById('objetivos-generales-container').addEventListener('click', function(event) {
+        if (event.target && event.target.classList.contains('actualizar-objetivo-general')) {
+            console.log('Actualizar objetivo general');
+
+            var objetivoGeneralItem = event.target.closest('.objetivo-general-item');
+
+            var objetivoId = objetivoGeneralItem.dataset.objetivoGeneralId;
+
+            var descripcion = objetivoGeneralItem.querySelector('.objetivo-general-input').value;
+
+            var empresaIdSeleccionado = 0;
+            var nombreEmpresa = localStorage.getItem('empresa_seleccionada');
+            if (nombreEmpresa) {
+                nombreEmpresa = JSON.parse(nombreEmpresa);
+                empresaIdSeleccionado = nombreEmpresa.id;
+            }
+
+            $.ajax({
+                url: '/objectivo/actualizar_objectivo_general',
+                type: 'POST',
+                data: {
+                    empresa_id: empresaIdSeleccionado,
+                    objetivo_id: objetivoId,
+                    descripcion: descripcion
+                },
+                success: function(data) {
+                    swal({
+                        icon: 'success',
+                        title: 'Objetivo General actualizado exitosamente!',
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then(function() {
+                        location.reload();
+                    });
+                },
+                error: function(error) {
+                    console.error('Error:', error);
+                }
+            });
+        }
+    });
+
+
+
+    // Evento click para actualizar un objetivo específico
+    document.getElementById('objetivos-generales-container').addEventListener('click', function(event) {
+        if (event.target && event.target.classList.contains('actualizar-objetivo-especifico')) {
+            console.log('Actualizar objetivo específico');
+
+            var objetivoEspecificoItem = event.target.closest('.objetivo-especifico-item');
+            
+            var objetivoEspecificoId = objetivoEspecificoItem.dataset.objetivoEspecificoId;
+            var descripcion = objetivoEspecificoItem.querySelector('.objetivo-especifico-input').value;
+
+
+            if (!descripcion.trim()) {
+                swal({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'La descripción del objetivo específico no puede estar vacía',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+                return; 
+            }
+
+            $.ajax({
+                url: '/objectivo/actualizar_objetivo_especifico',
+                type: 'POST',
+                data: {
+                    objetivo_especifico_id: objetivoEspecificoId,
+                    descripcion: descripcion
+                },
+                success: function(data) {
+                    if (data.status === 'success') {
+                        swal({
+                            icon: 'success',
+                            title: 'Objetivo específico actualizado exitosamente!',
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    } else {
+                        swal({
+                            icon: 'error',
+                            title: 'Error al actualizar el objetivo específico',
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    }
+                },
+                error: function(error) {
+                    console.error('Error:', error);
+                    swal({
+                        icon: 'error',
+                        title: 'Error al actualizar el objetivo específico',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                }
+            });
+        }
+    });
+
+
+    // Inicializar tooltips
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+</script>
+

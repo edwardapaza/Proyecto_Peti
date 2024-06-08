@@ -1,0 +1,155 @@
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+    }
+
+    h1 {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .foda-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .foda-table th, .foda-table td {
+        border: 1px solid #dee2e6;
+        padding: 10px;
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    .foda-table th {
+        background-color: #f8f9fa;
+    }
+
+    .foda-table textarea {
+        width: calc(100% - 20px);
+        height: 200px;
+        padding: 10px;
+        margin: 0;
+        resize: none;
+        border: none;
+        background-color: #f8f9fa;
+        transition: box-shadow 0.3s;
+    }
+
+    .foda-table textarea:focus {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+    }
+
+    .btn-save {
+        width: 100%;
+        max-width: 200px;
+        margin: 20px auto;
+        display: block;
+    }
+</style>
+
+<div class="card mb-4">
+    <div class="card-header">
+        <i class="fas fa-chart-area me-1"></i>
+        Analisis Interno y Externo (FODA)
+    </div>
+    <div class="card-body" id="valores-container">
+        <table class="table foda-table">
+            <thead class="thead-light">
+                <tr>
+                    <th scope="col"></th>
+                    <th scope="col">FORTALEZAS</th>
+                    <th scope="col">DEBILIDADES</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th scope="row">ANÁLISIS INTERNO</th>
+                    <td><textarea id="fortalezas"  class="form-control" placeholder="Escribe las fortalezas internas aquí">{{ analisis_data.fortalezas }}</textarea></td>
+                    <td><textarea id="debilidades" class="form-control" placeholder="Escribe las debilidades internas aquí">{{ analisis_data.debilidades }}</textarea></td>
+                </tr>
+                <tr>
+                    <th scope="row">ANÁLISIS EXTERNO</th>
+                    <td><textarea  id="oportunidades"  class="form-control" placeholder="Escribe las oportunidades externas aquí">{{ analisis_data.oportunidades }}</textarea></td>
+                    <td><textarea id="amenazas" class="form-control" placeholder="Escribe las amenazas externas aquí">{{ analisis_data.amenazas }}</textarea></td>
+                </tr>                 
+            </tbody>
+        </table>
+    </div>
+    <div class="card-footer">
+        <button type="button" class="btn btn-primary agregar-valorr">Agregar </button>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script>
+    $(document).ready(function() {
+        var empresa_id_seleccionado = 0;
+
+        function validarCampos() {
+            var fortalezas = $('#fortalezas').val();
+            var debilidades = $('#debilidades').val();
+            var oportunidades = $('#oportunidades').val();
+            var amenazas = $('#amenazas').val();
+
+            var nombreEmpresa = localStorage.getItem('empresa_seleccionada');
+            if (nombreEmpresa) {
+                nombreEmpresa = JSON.parse(nombreEmpresa);
+                empresa_id_seleccionado = nombreEmpresa.id;
+            }
+
+            if (fortalezas === '' || debilidades === '' || oportunidades === '' || amenazas === '') {
+                swal({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Por favor, llene todos los campos antes de agregar.'
+                });
+                return false;
+            }
+            return true;
+        }
+
+        $('.agregar-valorr').on('click', function() {
+            if (validarCampos()) {
+                var fortalezas = $('#fortalezas').val();
+                var debilidades = $('#debilidades').val();
+                var oportunidades = $('#oportunidades').val();
+                var amenazas = $('#amenazas').val();
+
+                var data = {
+                    fortalezas: fortalezas,
+                    debilidades: debilidades,
+                    oportunidades: oportunidades,
+                    amenazas: amenazas,
+                    empresa_id: empresa_id_seleccionado
+                };
+
+                $.ajax({
+                    url: '/analisis/guardar_valores',
+                    type: 'POST',
+                    data: data,
+                    success: function(response) {
+                        swal({
+                            icon: 'success',
+                            title: '¡Éxito!',
+                            text: 'Analisis guardados correctamente'
+                        }).then((result) => {
+                            location.reload(); 
+                        });
+                    },
+                    error: function(error) {
+                        console.log("Error al guardar los valores:", error);
+                        swal({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Hubo un error al guardar los valores. Por favor, inténtalo de nuevo.'
+                        });
+                    }
+                });
+            }
+        });
+
+    });
+</script>

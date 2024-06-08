@@ -1,0 +1,91 @@
+
+
+<div class="card mb-4">
+    <div class="card-header">
+        <i class="fas fa-chart-area me-1"></i>
+        Visión
+    </div>
+    <div class="card-body">
+        {% if vision %}
+            {% for item in vision %}
+                <p>{{ item.vision }}</p>
+            {% endfor %}
+        {% else %}
+            <p>No hay vision guardada para esta empresa.</p>
+        {% endif %}
+    </div>
+    <div class="card-footer">
+        <form id="vision-form">
+            <div class="mb-3">
+                <label for="vision" class="form-label">{{ 'Actualizar Visión' if vision else 'Nueva Visión' }}</label>
+                <textarea class="form-control" id="visions" name="visions" rows="3"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">{{ 'Actualizar Visión' if vision else 'Guardar Visión' }}</button>
+        </form>
+    </div>
+</div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script>
+
+    $(document).ready(function() {
+
+    
+        $('#vision-form').on('submit', function(event) {
+            event.preventDefault();
+
+            var visionValue = document.getElementById('visions').value;
+
+            if (!visionValue.trim()) { 
+                swal({
+                    icon: 'error',
+                    title: '¡Error!',
+                    text: 'Por favor, ingrese la visión antes de guardar.',
+                });
+                return; 
+        
+            }
+
+            var empresaSeleccionada = JSON.parse(localStorage.getItem('empresa_seleccionada'));
+            if (!empresaSeleccionada) { 
+                swal({
+                    icon: 'error',
+                    title: '¡Error!',
+                    text: 'No se ha seleccionado ninguna empresa.',
+                });
+                return; 
+            }
+
+            var formData = {
+                empresa_id: empresaSeleccionada.id,
+                vision: visionValue,
+                
+            };
+
+            $.ajax({
+                url: "{{ url_for('vision.save_vision') }}",
+                type: "POST",
+                data: formData,
+                success: function(response) {
+                    swal({
+                        icon: 'success',
+                        title: 'Vision guardada exitosamente!',
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then(function() {
+                        location.reload();
+                    });
+                },
+                error: function(response) {
+                    swal({
+                        icon: 'error',
+                        title: '¡Error!',
+                        text: 'Error al guardar la vision',
+                    });
+                }
+            });
+        });
+    });
+</script>

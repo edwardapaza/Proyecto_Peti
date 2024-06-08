@@ -1,0 +1,64 @@
+<div class="card mb-4">
+    <div class="card-header">
+        <i class="fas fa-chart-area me-1"></i>
+        Valores
+    </div>
+    <div class="card-body" id="valores-container">
+        {% if valores %}
+            {% for valor in valores %}
+            <div class="mb-3 valor-item row">
+                <div class="col-md-8">
+                    <textarea class="form-control valor-input" name="valores" rows="3">{{ valor.valor }}</textarea>
+                </div>
+                <div class="col-md-4">
+                    <button type="button" class="btn btn-danger eliminar-valor" data-bs-toggle="tooltip" data-bs-placement="top" title="Eliminar"><i class="fas fa-trash-alt"></i></button>
+                    <button type="button" class="btn btn-primary actualizar-valor" data-bs-toggle="tooltip" data-bs-placement="top" title="Actualizar"><i class="fas fa-edit"></i></button>
+                </div>
+            </div>
+            
+            {% endfor %}
+        {% endif %}
+    </div>
+    <div class="card-footer">
+        <button type="button" class="btn btn-primary agregar-valor">Agregar Nuevo Valor</button>
+    </div>
+</div>
+
+<script>
+    // Función para agregar un nuevo campo de entrada de valor
+    function agregarCampoValor() {
+        var nuevoCampo = document.createElement('div');
+        nuevoCampo.className = 'mb-3 valor-item row';
+        nuevoCampo.innerHTML = `
+            <div class="col-md-8">
+                <textarea class="form-control valor-input" name="valores" rows="3"></textarea>
+            </div>
+            <div class="col-md-4">
+                <button type="button" class="btn btn-danger eliminar-valor" data-bs-toggle="tooltip" data-bs-placement="top" title="Eliminar"><i class="fas fa-trash-alt"></i></button>
+                <button type="button" class="btn btn-primary guardar-valor" data-bs-toggle="tooltip" data-bs-placement="top" title="Guardar valor"><i class="fas fa-save"></i></button>
+            </div>
+        `;
+        document.getElementById('valores-container').appendChild(nuevoCampo);
+    }
+
+    // Evento click para agregar un nuevo campo de entrada de valor
+    document.querySelector('.agregar-valor').addEventListener('click', function() {
+        agregarCampoValor();
+    });
+
+    // Evento click para eliminar un campo de entrada de valor
+    document.getElementById('valores-container').addEventListener('click', function(event) {
+        if (event.target && event.target.classList.contains('eliminar-valor')) {
+            event.target.closest('.valor-item').remove();
+        }
+    });
+
+    // Evento click para actualizar un campo de entrada de valor
+    document.getElementById('valores-container').addEventListener('click', function(event) {
+        if (event.target && event.target.classList.contains('actualizar-valor')) {
+            // Aquí puedes implementar la lógica para actualizar el valor en la base de datos
+            // Por ejemplo, puedes obtener el valor del campo de entrada correspondiente y enviarlo a través de una solicitud AJAX
+            console.log('Actualizar valor');
+        }
+    });
+</script>
